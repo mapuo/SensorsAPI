@@ -10,14 +10,16 @@ public class TemperatureSensor extends SensorBase<Temperature> implements Sensor
 	private static final String PATH = "temperature";
 	private Temperature temperature;
 	private Client client;
+	private String apiUrl;
 
-	public TemperatureSensor(Client client) {
+	public TemperatureSensor(String apiUrl, Client client) {
+		this.apiUrl = apiUrl;
 		this.client = client;
 		temperature = new Temperature();
 		temperature.setName("Temp");
 		temperature.setLocation(randomLocation());
 		temperature.setTemperature(randomTemp());
-		temperature = create(temperature, client, UriBuilder.fromUri(API_URL).path(PATH));
+		temperature = create(temperature, client, UriBuilder.fromUri(apiUrl).path(PATH));
 	}
 
 	@Override
@@ -36,7 +38,7 @@ public class TemperatureSensor extends SensorBase<Temperature> implements Sensor
 	@Override
 	public Temperature update() {
 		genDelta();
-		UriBuilder builder = UriBuilder.fromUri(API_URL).path(PATH).path("{uuid}");
+		UriBuilder builder = UriBuilder.fromUri(apiUrl).path(PATH).path("{uuid}");
 		WebTarget target = client.target(builder.build(temperature.getUuid().toString()));
 		
 		temperature = super.update(temperature, target);

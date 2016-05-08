@@ -17,7 +17,6 @@ import link.mapuo.sensors.model.SensorModel;
 
 public abstract class SensorBase<T> {
 	private static final String[] LOCATIONS = { "basement", "balcony", "rooftop", "living room", "bedroom", "kitchen" };
-	protected static final String API_URL = "http://localhost:8080/sensors/api/";
 
 	protected int randomHmdt() {
 		return ThreadLocalRandom.current().nextInt(0, 100);

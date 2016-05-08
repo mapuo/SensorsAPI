@@ -61,6 +61,9 @@
 						<configuration>
 							<classpathScope>test</classpathScope>
 							<mainClass>link.mapuo.sensors.client.SensorClient</mainClass>
+							<arguments>
+								<argument>http://localhost:8080/sensors/api/</argument>
+							</arguments>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -85,6 +88,10 @@
 						<configuration>
 							<classpathScope>test</classpathScope>
 							<mainClass>link.mapuo.sensors.emulator.SensorEmulator</mainClass>
+							<arguments>
+								<argument>http://localhost:8080/sensors/api/</argument>
+								<argument>10</argument>
+							</arguments>
 						</configuration>
 					</plugin>
 				</plugins>

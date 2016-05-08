@@ -10,8 +10,10 @@ public class HumiditySensor extends SensorBase<Humidity> implements Sensor<Humid
 	private static final String PATH = "humidity";
 	private Humidity humidity;
 	private Client client;
+	private String apiUrl;
 
-	public HumiditySensor(Client client) {
+	public HumiditySensor(String apiUrl, Client client) {
+		this.apiUrl = apiUrl;
 		this.client = client;
 		int t = randomTemp();
 		int h = randomHmdt();
@@ -20,7 +22,7 @@ public class HumiditySensor extends SensorBase<Humidity> implements Sensor<Humid
 		humidity.setLocation(randomLocation());
 		humidity.setTemperature(t);
 		humidity.setHumidity(h);
-		humidity = create(humidity, client, UriBuilder.fromUri(API_URL).path(PATH));
+		humidity = create(humidity, client, UriBuilder.fromUri(apiUrl).path(PATH));
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class HumiditySensor extends SensorBase<Humidity> implements Sensor<Humid
 	@Override
 	public Humidity update() {
 		genDelta();
-		UriBuilder builder = UriBuilder.fromUri(API_URL).path(PATH).path("{uuid}");
+		UriBuilder builder = UriBuilder.fromUri(apiUrl).path(PATH).path("{uuid}");
 		WebTarget target = client.target(builder.build(humidity.getUuid().toString()));
 		
 		humidity = super.update(humidity, target);

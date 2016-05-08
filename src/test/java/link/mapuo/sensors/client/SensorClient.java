@@ -18,32 +18,35 @@ import link.mapuo.sensors.model.Temperature;
 
 @SuppressWarnings("rawtypes")
 public class SensorClient {
-	private static final String API_URL = "http://localhost:8080/sensors/api/";
-	private static final String TEMP_PATH = "temperature";
-	private static final String HMDT_PATH = "humidity";
-
 	private enum Target {
-		TEMPERATURE(Temperature.class, UriBuilder.fromUri(API_URL).path(TEMP_PATH)), 
-		HUMIDITY(Humidity.class, UriBuilder.fromUri(API_URL).path(HMDT_PATH));
+		TEMPERATURE(Temperature.class, "temperature"), 
+		HUMIDITY(Humidity.class, "humidity");
 
 		private Class entityType;
-		private UriBuilder uri;
+		private String path;
 
-		Target(Class entityType, UriBuilder uri) {
+		Target(Class entityType, String path) {
 			this.entityType = entityType;
-			this.uri = uri;
+			this.path = path;
 		}
 	}
 
 	public static void main(String[] args) {
+		String apiUrl;
+		if (args.length > 0) {
+			apiUrl = args[0];
+		} else {
+			apiUrl = "http://localhost:8080/sensors/api/";
+		}
 		Client client = ClientBuilder.newClient();
 
 		Target[] targets = Target.values();
 		for (Target target : targets) {
-			URI listUri = target.uri.clone().path("list").build();
+			UriBuilder baseUri = UriBuilder.fromUri(apiUrl).path(target.path);
+			URI listUri = baseUri.clone().path("list").build();
 			WebTarget webTarget = client.target(listUri);
 			List<String> list = getList(webTarget);
-			list.forEach((uuid) -> printSensor(client, target.uri.clone(), target.entityType, uuid));
+			list.forEach((uuid) -> printSensor(client, baseUri.clone(), target.entityType, uuid));
 		}
 	}
 

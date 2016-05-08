@@ -9,14 +9,14 @@ public class SensorRunnable implements Runnable {
 	private Sensor<?> sensor;
 	private Client client;
 
-	public SensorRunnable() {
+	public SensorRunnable(String apiUrl) {
 		client = ClientBuilder.newClient();
 		if (ThreadLocalRandom.current().nextBoolean()) {
-			sensor = new TemperatureSensor(client);
+			sensor = new TemperatureSensor(apiUrl, client);
 		}
 		else
 		{
-			sensor = new HumiditySensor(client);
+			sensor = new HumiditySensor(apiUrl, client);
 		}
 		System.out.println("[" + Thread.currentThread().getName() + "] Created thread with type " + sensor.getClass() + "!");
 	}
