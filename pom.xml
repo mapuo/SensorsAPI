@@ -43,6 +43,30 @@
 
 	<profiles>
 		<profile>
+			<id>sensor-client</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<execution>
+								<phase>test</phase>
+								<goals>
+									<goal>java</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<classpathScope>test</classpathScope>
+							<mainClass>link.mapuo.sensors.client.SensorClient</mainClass>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>sensor-emulator</id>
 			<build>
 				<plugins>
@@ -61,9 +85,6 @@
 						<configuration>
 							<classpathScope>test</classpathScope>
 							<mainClass>link.mapuo.sensors.emulator.SensorEmulator</mainClass>
-							<arguments>
-								<argument>10</argument>
-							</arguments>
 						</configuration>
 					</plugin>
 				</plugins>
