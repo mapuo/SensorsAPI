@@ -1,16 +1,19 @@
 package link.mapuo.sensors.model;
 
-import java.security.InvalidParameterException;
 import java.util.UUID;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Humidity extends Temperature {
 	@XmlElement
+	@DecimalMin(value = "0",   inclusive = true, message = "Humidity shoud be >= 0"  )
+	@DecimalMax(value = "100", inclusive = true, message = "Humidity shoud be <= 100")
 	private int humidity;
-	
+
 	public Humidity() {
 		// JAXB needs this
 	}
@@ -19,6 +22,7 @@ public class Humidity extends Temperature {
 		super(temperature);
 		this.setHumidity(humidity);
 	}
+
 	public Humidity(UUID uuid, int temperature, int humidity) {
 		super(uuid, temperature);
 		this.setHumidity(humidity);
@@ -29,10 +33,6 @@ public class Humidity extends Temperature {
 	}
 
 	public void setHumidity(int humidity) {
-		// Validation? 0 >= humidity <= 100
-		if (humidity < 0 || humidity > 100) {
-			throw new InvalidParameterException("humidity must be between 0 and 100");
-		}
 		this.humidity = humidity;
 	}
 

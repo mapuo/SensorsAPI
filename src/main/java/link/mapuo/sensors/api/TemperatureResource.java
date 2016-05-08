@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,7 +37,7 @@ public class TemperatureResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createSensor(@Context UriInfo info, Temperature t) {
+	public Response createSensor(@Context UriInfo info, @Valid Temperature t) {
 		DataSource ds = getDataSource();
 		try (Connection con = ds.getConnection()) {
 			TemperatureDAO dao = new TemperatureDAO(con);
@@ -97,7 +98,7 @@ public class TemperatureResource {
 	@Path("{sensorid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response recordValue(@PathParam("sensorid") UUID uuid, Temperature t) {
+	public Response recordValue(@PathParam("sensorid") UUID uuid, @Valid Temperature t) {
 		System.out.println("recordValue: " + t);
 		DataSource ds = getDataSource();
 		try (Connection con = ds.getConnection()) {

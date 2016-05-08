@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,7 +37,7 @@ public class HumidityResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createSensor(@Context UriInfo info, Humidity h) {
+	public Response createSensor(@Context UriInfo info, @Valid Humidity h) {
 		DataSource ds = getDataSource();
 		try (Connection con = ds.getConnection()) {
 			HumidityDAO dao = new HumidityDAO(con);
@@ -97,7 +98,7 @@ public class HumidityResource {
 	@Path("{sensorid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response recordValue(@PathParam("sensorid") UUID uuid, Humidity h) {
+	public Response recordValue(@PathParam("sensorid") UUID uuid, @Valid Humidity h) {
 		System.out.println("recordValue: " + h);
 		DataSource ds = getDataSource();
 		try (Connection con = ds.getConnection()) {

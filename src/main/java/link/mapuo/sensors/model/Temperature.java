@@ -1,14 +1,19 @@
 package link.mapuo.sensors.model;
 
-import java.security.InvalidParameterException;
 import java.util.UUID;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Temperature extends SensorModel {
 	@XmlElement
+	@NotNull
+	@DecimalMin(value = "-40", inclusive = true, message = "Temperature shoud be >= -40")
+	@DecimalMax(value = "100", inclusive = true, message = "Temperature shoud be <= 100")
 	private int temperature;
 
 	public Temperature() {
@@ -30,10 +35,6 @@ public class Temperature extends SensorModel {
 	
 	public void setTemperature(int temperature)
 	{
-		// Validation? -40 >= temperature <= 100
-		if (temperature < -40 || temperature > 100) {
-			throw new InvalidParameterException("temperature must be between -40 and 100");
-		}
 		this.temperature = temperature;
 	}
 
